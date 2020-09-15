@@ -1,0 +1,16 @@
+﻿App needs to do: 
+
+	1. pick a word and inform the player how long the word is
+	2. allow the player to guess a letter
+	3. evaluate the player's guess
+		3a. if the guess is correct, show the guess's placement within the word
+		3b. otherwise, increase "error count" value
+	4. check if the game is finished
+		4a. if all of the letters have been guessed, then the player wins!
+		4b. if the error count gets higher than a set value, then the player loses
+	5. if the game is not finished, loop back to step 2
+
+Stretch goals:
+	- player can adjust difficulty to increase word length/decrease error count max value, etc
+	- pick category for word
+	+ remove guess from list of available guesses
