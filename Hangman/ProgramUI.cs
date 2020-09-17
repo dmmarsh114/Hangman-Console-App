@@ -49,7 +49,7 @@ namespace Hangman
                 try
                 {
                     guess = Convert.ToChar(Console.ReadLine().ToUpper());
-                    if (guess == ' ' || !Char.IsLetter(guess))
+                    if (!Char.IsLetter(guess))
                     {
                         Console.Clear();
                         Console.WriteLine("That is an invalid guess.");
@@ -109,6 +109,7 @@ namespace Hangman
 
         private void EvaluateGuess(char guess, string word)
         {
+            Console.Clear();
             if (pastGuesses.Contains(guess))
             {
                 Console.WriteLine($"You already guessed {guess}, you dingus.");
@@ -126,14 +127,13 @@ namespace Hangman
 
         private void IncorrectGuess(string word)
         {
-            Console.Clear();
             Console.WriteLine($"Wrong!\n" +
                 $"You have {maxErrorCount - errorCount} guess(es) left.");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"{string.Join("", currentGuess)}");
-            Console.ForegroundColor = ConsoleColor.White;
+
+            PrintCurrentGuess();
 
             errorCount++;
+
             // Check for player defeat
             if (errorCount > maxErrorCount)
             {
@@ -148,7 +148,6 @@ namespace Hangman
 
         private void CorrectGuess(char guess, string word)
         {
-            Console.Clear();
             Console.WriteLine("Correct!");
 
             for (int i = 0; i < word.Length; i++)
@@ -162,9 +161,8 @@ namespace Hangman
                     currentGuess[i] = '_';
                 }
             }
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(string.Join("", currentGuess));
-            Console.ForegroundColor = ConsoleColor.White;
+
+            PrintCurrentGuess();
 
             // Check for victory
             if (string.Join("", currentGuess) == word)
@@ -175,6 +173,13 @@ namespace Hangman
                 Console.ReadKey();
                 playing = false;
             }
+        }
+
+        private void PrintCurrentGuess()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(string.Join("", currentGuess));
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }
