@@ -14,7 +14,7 @@ namespace Hangman
         int maxErrorCount = 5;
         string word;
         char[] currentGuess;
-        List<string> pastGuesses = new List<string>();
+        List<char> pastGuesses = new List<char>();
 
         public void Run()
         {
@@ -32,15 +32,25 @@ namespace Hangman
             while (playing)
             {
                 Console.WriteLine("Please pick a single letter.");
-                string guess = Console.ReadLine().ToUpper();
+                char guess;
 
-                if (guess == "" || guess.Length > 1)
+                try
                 {
-                    Console.WriteLine("That is an invalid guess.");
+                    guess = Convert.ToChar(Console.ReadLine().ToUpper());
+                    if (guess == ' ' || !Char.IsLetter(guess))
+                    {
+                        Console.Clear();
+                        Console.WriteLine("That is an invalid guess.");
+                    }
+                    else
+                    {
+                        EvaluateGuess(guess, word);
+                    }
                 }
-                else
+                catch
                 {
-                    EvaluateGuess(guess, word);
+                    Console.Clear();
+                    Console.WriteLine("That is an invalid guess.");
                 }
             }
         }
@@ -57,7 +67,7 @@ namespace Hangman
             return Hangmanwords[random.Next(Hangmanwords.Length)];
         }
 
-        public void EvaluateGuess(string guess, string word)
+        public void EvaluateGuess(char guess, string word)
         {
             // ============== ALREADY GUESSED ==============
             if (pastGuesses.Contains(guess))
@@ -69,23 +79,23 @@ namespace Hangman
             {
                 Console.Clear();
                 Console.WriteLine("Correct!");
-                char guessChar = Convert.ToChar(guess);
+
                 for (int i = 0; i < word.Length; i++)
                 {
-                    if (word[i] == guessChar)
+                    if (word[i] == guess)
                     {
-                        currentGuess[i] = guessChar;
+                        currentGuess[i] = guess;
                     }
                     else if (!Char.IsLetter(currentGuess[i]))
                     {
                         currentGuess[i] = '_';
                     }
                 }
-
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(string.Join("", currentGuess));
                 Console.ForegroundColor = ConsoleColor.White;
 
+                // Check for victory
                 if (string.Join("", currentGuess) == word)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -106,6 +116,7 @@ namespace Hangman
                 Console.ForegroundColor = ConsoleColor.White;
 
                 errorCount++;
+                // Check for player defeat
                 if (errorCount > maxErrorCount)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
