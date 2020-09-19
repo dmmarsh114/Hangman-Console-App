@@ -44,6 +44,8 @@ namespace Hangman
             while (playing)
             {
                 Console.WriteLine("Please pick a single letter.");
+                DrawHangman(errorCount);
+                PrintCurrentGuess();
                 char guess;
 
                 try
@@ -69,10 +71,10 @@ namespace Hangman
 
         private string PickWord(string input)
         {
-            string[] ColorWords = { "RED", "WHITE", "BLUE", "PURPLE", "CHARTREUSE", "CORNFLOWERBLUE", "WHITESMOKE", "FUCHSIA" };
-            string[] FoodWords = { "YAM", "BANANA", "ORANGE", "COFFEE", "STEAK", "CURRY", "SHRIMP", "PIE", "RAVIOLI" };
-            string[] OfficeCharacters = { "JIM", "DWIGHT", "PAM", "KELLY", "PHYLLIS", "MICHAEL", "TOBY", "KEVIN" };
-            string[] RonSwanson = { "BACON", "EGGS", "BREAKFAST", "WHISKEY", "DUKESILVER", "TAMMY" };
+            string[] ColorWords = { "RED", "WHITE", "BLUE", "PURPLE", "CHARTREUSE", "CORNFLOWERBLUE", "WHITESMOKE", "FUCHSIA", "SILVER" };
+            string[] FoodWords = { "YAM", "BANANA", "ORANGE", "COFFEE", "STEAK", "CURRY", "SHRIMP", "PIE", "RAVIOLI", "PASTA" };
+            string[] OfficeCharacters = { "JIM", "DWIGHT", "PAM", "KELLY", "PHYLLIS", "MICHAEL", "TOBY", "KEVIN", "JAN" };
+            string[] RonSwanson = { "BACON", "EGGS", "BREAKFAST", "WHISKEY", "DUKESILVER", "TAMMY", "WOODWORKING", "CANOE" };
 
             string category;
             string wordToPick;
@@ -127,20 +129,22 @@ namespace Hangman
 
         private void IncorrectGuess(string word)
         {
-            Console.WriteLine($"Wrong!\n" +
-                $"You have {maxErrorCount - errorCount} guess(es) left.");
-
-            PrintCurrentGuess();
-
             errorCount++;
 
+            Console.WriteLine($"Wrong!\n" +
+                $"You have {maxErrorCount - errorCount} incorrect guess(es) left.");
+
             // Check for player defeat
-            if (errorCount > maxErrorCount)
+            if (errorCount >= maxErrorCount)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("You lose!\n" +
                     $"The word was \"{word}\".\n" +
                     "Press any key to exit in shame.");
+
+                DrawHangman(errorCount);
+                PrintCurrentGuess();
+
                 Console.ReadKey();
                 playing = false;
             }
@@ -162,14 +166,16 @@ namespace Hangman
                 }
             }
 
-            PrintCurrentGuess();
-
             // Check for victory
             if (string.Join("", currentGuess) == word)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("You won!\n" +
                     "Press any key to exit.");
+                
+                DrawHangman(errorCount);
+                PrintCurrentGuess();
+
                 Console.ReadKey();
                 playing = false;
             }
@@ -178,7 +184,68 @@ namespace Hangman
         private void PrintCurrentGuess()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(string.Join("", currentGuess));
+            Console.WriteLine(string.Join("", currentGuess) + "\n");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        private void DrawHangman(int i)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            if (i == 1)
+            {
+                Console.WriteLine(@" |=====||");
+                Console.WriteLine(@" O     ||");
+                Console.WriteLine(@" |     ||");
+                Console.WriteLine(@"       ||");
+                Console.WriteLine(@"       ||");
+                Console.WriteLine(@"       MM");
+            }
+            else if (i == 2)
+            {
+                Console.WriteLine(@" |=====||");
+                Console.WriteLine(@" O     ||");
+                Console.WriteLine(@"/|     ||");
+                Console.WriteLine(@"       ||");
+                Console.WriteLine(@"       ||");
+                Console.WriteLine(@"       MM");
+            }
+            else if (i == 3)
+            {
+                Console.WriteLine(@" |=====||");
+                Console.WriteLine(@" O     ||");
+                Console.WriteLine(@"/|\    ||");
+                Console.WriteLine(@"       ||");
+                Console.WriteLine(@"       ||");
+                Console.WriteLine(@"       MM");
+            }
+            else if (i == 4)
+            {
+                Console.WriteLine(@" |=====||");
+                Console.WriteLine(@" O     ||");
+                Console.WriteLine(@"/|\    ||");
+                Console.WriteLine(@"/      ||");
+                Console.WriteLine(@"       ||");
+                Console.WriteLine(@"       MM");
+            }
+            else if (i == 5)
+            {
+                Console.WriteLine(@" |=====||");
+                Console.WriteLine(@" O     ||");
+                Console.WriteLine(@"/|\    ||");
+                Console.WriteLine(@"/ \    ||");
+                Console.WriteLine(@"       ||");
+                Console.WriteLine(@"       MM");
+            }
+            else
+            {
+                Console.WriteLine(@" |=====||");
+                Console.WriteLine(@"       ||");
+                Console.WriteLine(@"       ||");
+                Console.WriteLine(@"       ||");
+                Console.WriteLine(@"       ||");
+                Console.WriteLine(@"       MM");
+            }
+            Console.WriteLine("");
             Console.ForegroundColor = ConsoleColor.White;
         }
     }
