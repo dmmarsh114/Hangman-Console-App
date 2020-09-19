@@ -114,7 +114,7 @@ namespace Hangman
             Console.Clear();
             if (pastGuesses.Contains(guess))
             {
-                Console.WriteLine($"You already guessed {guess}, you dingus.");
+                Console.WriteLine($"You already guessed {guess}.");
             }
             else if (word.Contains(guess))
             {
@@ -140,7 +140,7 @@ namespace Hangman
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("You lose!\n" +
                     $"The word was \"{word}\".\n" +
-                    "Press any key to exit in shame.");
+                    "Press any key to exit in shame. \n");
 
                 DrawHangman(errorCount);
                 PrintCurrentGuess();
@@ -171,7 +171,7 @@ namespace Hangman
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("You won!\n" +
-                    "Press any key to exit.");
+                    "Press any key to exit. \n");
                 
                 DrawHangman(errorCount);
                 PrintCurrentGuess();
